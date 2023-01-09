@@ -9,7 +9,10 @@ function Counter({initialCount = 0, step = 3}) {
   const countReducer = (state, action) => {
     switch (action.type) {
       case 'ADD': {
-        return {count: state.count + action.step}
+        return {count: state.count + action.payload}
+      }
+      case 'DELETE': {
+        return {count: state.count - action.payload}
       }
 
       default:
@@ -27,9 +30,23 @@ function Counter({initialCount = 0, step = 3}) {
   const increment = () =>
     dispatch({
       type: 'ADD',
-      step,
+      payload: step,
     })
-  return <button onClick={increment}>{state.count}</button>
+
+  const decrement = () => {
+    dispatch({
+      type: 'DELETE',
+      payload: step,
+    })
+  }
+  return (
+    <div>
+      {' '}
+      <p className="">{state.count}</p>
+      <button onClick={increment}>increment</button>
+      <button onClick={decrement}>decrement</button>
+    </div>
+  )
 }
 
 function App() {
