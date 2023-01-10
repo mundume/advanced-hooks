@@ -15,6 +15,14 @@ export const CountProvider = ({children}) => {
   )
 }
 
+function useCount() {
+  const context = React.useContext(CountContext)
+  if (!context) {
+    throw new Error(`useCount must be rendered within countProvider`)
+  }
+  return context
+}
+
 // 🐨 create your CountContext here with React.createContext
 
 // 🐨 create a CountProvider component here that does this:
@@ -25,12 +33,12 @@ export const CountProvider = ({children}) => {
 
 function CountDisplay() {
   // 🐨 get the count from useContext with the CountContext
-  const {count} = React.useContext(CountContext)
+  const {count} = useCount()
   return <div>{`The current count is ${count}`}</div>
 }
 
 function Counter() {
-  const {setCount} = React.useContext(CountContext)
+  const {setCount} = useCount()
   // 🐨 get the setCount from useContext with the CountContext
 
   const increment = () => setCount(c => c + 1)
@@ -39,16 +47,16 @@ function Counter() {
 
 function App() {
   return (
-    <CountProvider>
-      <div>
-        {/*
+    <div>
+      {/*
         🐨 wrap these two components in the CountProvider so they can access
         the CountContext value
       */}
+      <CountProvider>
         <CountDisplay />
         <Counter />
-      </div>
-    </CountProvider>
+      </CountProvider>
+    </div>
   )
 }
 
